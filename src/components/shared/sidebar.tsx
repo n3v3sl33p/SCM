@@ -5,6 +5,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -16,6 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import Logo from "@/assets/scm_logo.svg";
 import { ChevronUp, User2 } from "lucide-react";
 import { useUserStore } from "@/store/useUserStore";
 import { useNavigate } from "react-router-dom";
@@ -39,6 +41,16 @@ export const AppSidebar: React.FC<Props> = ({
   const navigate = useNavigate();
   return (
     <Sidebar variant="floating">
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <div className="flex items-center p-2 gap-5">
+              <img src={Logo} alt="logo" className="h-8 w-8" />
+              SCM
+            </div>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
