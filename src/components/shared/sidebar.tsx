@@ -46,7 +46,7 @@ export const AppSidebar: React.FC<Props> = ({
           <SidebarMenuItem>
             <div className="flex items-center p-2 gap-5">
               <img src={Logo} alt="logo" className="h-8 w-8" />
-              SCM
+              <span className="text-2xl">SCM</span>
             </div>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -64,7 +64,7 @@ export const AppSidebar: React.FC<Props> = ({
                   >
                     <a>
                       <item.icon />
-                      <span>{item.title}</span>
+                      <span className="text-lg">{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -79,7 +79,8 @@ export const AppSidebar: React.FC<Props> = ({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <User2 /> {user?.email}
+                  <User2 />
+                  <span className="text-lg">{user?.email}</span>
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -87,17 +88,14 @@ export const AppSidebar: React.FC<Props> = ({
                 side="top"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <DropdownMenuItem>
-                  <span
-                    className="text-red-600"
-                    onClick={() => {
-                      localStorage.removeItem("token");
-                      localStorage.removeItem("refresh-token");
-                      navigate("/auth");
-                    }}
-                  >
-                    Выйти
-                  </span>
+                <DropdownMenuItem
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("refresh-token");
+                    navigate("/auth");
+                  }}
+                >
+                  <span className="text-red-600">Выйти</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

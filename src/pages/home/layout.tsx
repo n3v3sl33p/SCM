@@ -1,4 +1,4 @@
-export function LayoutMain({
+export function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;

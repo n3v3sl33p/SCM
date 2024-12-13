@@ -1,25 +1,18 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import Main from "./pages/main/main-page.tsx";
-import { Auth } from "./pages/auth/auth.tsx";
-import { Layout as LayoutAuth } from "./pages/auth/layout.tsx";
-
+import Home from "./pages/home";
+import Auth from "./pages/auth";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Main />,
+    element: <Home />,
   },
   {
     path: "/auth",
-    element: (
-      <LayoutAuth>
-        <Auth />
-      </LayoutAuth>
-    ),
+    element: <Auth />,
   },
 ]);
 

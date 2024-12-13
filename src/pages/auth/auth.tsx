@@ -8,7 +8,7 @@ import { LoginSchema } from "@/constants/login-schema";
 import { RegSchema } from "@/constants/reg-schema";
 import { cn } from "@/lib/utils";
 
-export const Auth: React.FC = () => {
+export const AuthPage: React.FC = () => {
   const loginForm = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {

@@ -29,3 +29,23 @@ export const changeUserData = async (data: IUser) => {
     throw error;
   }
 };
+
+export const getAllUsers = async () => {
+  try {
+    const response: AxiosResponse<IUser[]> = await api.get("/users/all");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteUser = async (id: string) => {
+  try {
+    const response: AxiosResponse<IUser> = await api.delete(
+      `/users/users/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -2,13 +2,14 @@ import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
 import RegFormField from "./field";
 import { MyForm } from "./my-form";
 import { register } from "@/services/auth";
-import { redirect } from "react-router-dom";
 
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const RegForm = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const form = useFormContext();
 
@@ -23,7 +24,7 @@ export const RegForm = () => {
       ).then((res) => {
         localStorage.setItem("token", res?.accessToken || "");
         localStorage.setItem("refresh-token", res?.refreshToken || "");
-        redirect("/");
+        navigate("/");
       });
       toast.promise(response, {
         loading: "Регистрируемся...",

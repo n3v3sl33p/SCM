@@ -1,3 +1,4 @@
+import AllUsers from "@/components/shared/all-users";
 import { CustomTrigger } from "@/components/shared/custom-trigger";
 import Map from "@/components/shared/Map";
 
@@ -5,7 +6,7 @@ import { ProfileInfo } from "@/components/shared/profile-info";
 import { AppSidebar } from "@/components/shared/sidebar";
 import { WarehouseInfo } from "@/components/shared/warehouse-info";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { User, Warehouse } from "lucide-react";
+import { User, Warehouse, BookText } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
@@ -14,8 +15,8 @@ interface Props {
 
 const MenuItems = [
   {
-    title: "Профиль",
-    icon: User,
+    title: "Личне данные",
+    icon: BookText,
   },
   {
     title: "Мой склад",
@@ -25,8 +26,12 @@ const MenuItems = [
     title: "Карта",
     icon: User,
   },
+  {
+    title: "Пользователи",
+    icon: User,
+  },
 ];
-const Home: React.FC<Props> = ({ className }) => {
+const HomePageAdmin: React.FC<Props> = ({ className }) => {
   const [selected, setSelected] = useState(0);
 
   return (
@@ -37,7 +42,7 @@ const Home: React.FC<Props> = ({ className }) => {
         setSelected={setSelected}
       />
       <CustomTrigger />
-      <div className="m-4">
+      <div className="m-4 flex-1 px-20">
         {selected === 0 && <ProfileInfo />}
         {selected === 1 && <WarehouseInfo />}
         {selected === 2 && (
@@ -45,8 +50,9 @@ const Home: React.FC<Props> = ({ className }) => {
             <Map />
           </div>
         )}
+        {selected === 3 && <AllUsers />}
       </div>
     </SidebarProvider>
   );
 };
-export default Home;
+export default HomePageAdmin;
