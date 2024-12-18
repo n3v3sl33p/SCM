@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -31,9 +32,11 @@ export const DialogCustom: React.FC<DialogCustomProps> = ({
         </DialogHeader>
         {description}
         <DialogFooter>
-          <Button variant={"destructive"} onClick={onClick}>
-            {buttonText}
-          </Button>
+          <DialogClose>
+            <Button variant={"destructive"} onClick={onClick}>
+              {buttonText}
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

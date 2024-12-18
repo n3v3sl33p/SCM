@@ -9,9 +9,10 @@ import { useUserStore } from "@/store/useUserStore";
 
 interface UserCardProps {
   user: IUser;
+  setUsers: React.Dispatch<React.SetStateAction<IUser[]>>;
 }
 
-const UserCard: React.FC<UserCardProps> = ({ user }) => {
+const UserCard: React.FC<UserCardProps> = ({ user, setUsers }) => {
   const currentUser = useUserStore((state) => state.user);
   return (
     <div className="grid grid-cols-2 gap-3 bg-zinc-100 rounded-md p-5 max-w-xl">
@@ -42,8 +43,9 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
           description="Вы точно хотите удалить пользователя?"
           onClick={() => {
             try {
-              console.log(user.id);
-              const response = deleteUser(user.id);
+              const response = deleteUser(user.id).then(() => {
+                setUsers((users) => users.filter((u) => u.id !== user.id));
+              });
               toast.promise(response, {
                 loading: "Удаление...",
                 success: "Пользователь успешно удален",

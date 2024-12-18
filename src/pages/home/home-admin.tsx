@@ -1,4 +1,6 @@
 import AllUsers from "@/components/shared/all-users";
+import CreateTransportForm from "@/components/shared/create-transport-form";
+import CreateTransportType from "@/components/shared/create-transport-type";
 import { CustomTrigger } from "@/components/shared/custom-trigger";
 import Map from "@/components/shared/Map";
 
@@ -6,7 +8,7 @@ import { ProfileInfo } from "@/components/shared/profile-info";
 import { AppSidebar } from "@/components/shared/sidebar";
 import { WarehouseInfo } from "@/components/shared/warehouse-info";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { User, Warehouse, BookText } from "lucide-react";
+import { User, Warehouse, BookText, Car } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
@@ -30,6 +32,14 @@ const MenuItems = [
     title: "Пользователи",
     icon: User,
   },
+  {
+    title: "Тип транспорта",
+    icon: User,
+  },
+  {
+    title: "Транспорт",
+    icon: Car,
+  },
 ];
 const HomePageAdmin: React.FC<Props> = ({ className }) => {
   const [selected, setSelected] = useState(0);
@@ -51,6 +61,8 @@ const HomePageAdmin: React.FC<Props> = ({ className }) => {
           </div>
         )}
         {selected === 3 && <AllUsers />}
+        {selected === 4 && <CreateTransportType />}
+        {selected === 5 && <CreateTransportForm />}
       </div>
     </SidebarProvider>
   );
