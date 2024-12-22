@@ -1,47 +1,87 @@
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  FieldValues,
-  useForm,
-  SubmitHandler,
-  FormProvider,
-} from "react-hook-form";
-
-import { MyForm } from "./my-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { Form } from "../ui/form";
+import { z } from "zod";
 import Field from "./field";
+import { Button } from "../ui/button";
+import SelectField from "./select-field";
+import { createTransport } from "@/services/transport";
+import toast from "react-hot-toast";
+
 interface Props {}
 
-const formSchema = z.object({
-  username: z.string().min(2).max(50),
+const createTransportSchema = z.object({
+  driverId: z.string().min(1, {
+    message: "Это поле обязательно",
+  }),
+  transportTypeId: z.string().min(1, {
+    message: "Это поле обязательно",
+  }),
+  transportRegNumber: z.string().min(1, {
+    message: "Это поле обязательно",
+  }),
+  volume: z.string().min(1, {
+    message: "Это поле обязательно",
+  }),
 });
-
-const onSubmit: SubmitHandler<FieldValues> = (data) => {
-  console.log(data);
+const handleSubmit: SubmitHandler<FieldValues> = (data) => {
+  const transport = {
+    driverId: data.driverId,
+    transportTypeId: data.transportTypeId,
+    transportRegNumber: data.transportRegNumber,
+    volume: data.volume,
+  };
+  try {
+    const response = createTransport(transport);
+    toast.promise(response, {
+      loading: "Создаем...",
+      success: "Транспорт создан",
+      error: "ОШИБКА ПРИ СОЗДАНИИ ТРАНСПОРТА",
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
-
 const CreateTransportForm: React.FC<Props> = ({}) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof createTransportSchema>>({
+    resolver: zodResolver(createTransportSchema),
     defaultValues: {
-      username: "",
+      driverId: "",
+      transportTypeId: "",
+      transportRegNumber: "",
+      volume: "",
     },
   });
-
   return (
-    <FormProvider {...form}>
-      <MyForm
-        title="Создать транспорт"
-        buttonText="Создать"
-        onSubmit={onSubmit}
-      >
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
         <Field
-          formControl={form.control}
-          label="Название"
-          placeholder="Название"
-          name="firstName"
+          control={form.control}
+          label="Водитель"
+          placeholder="Водитель"
+          name="driverId"
         />
-      </MyForm>
-    </FormProvider>
+        <SelectField
+          control={form.control}
+          label="Тип транспорта"
+          name="transportTypeId"
+          placeholder="Тип транспорта"
+        />
+        <Field
+          control={form.control}
+          label="Регистрационный номер"
+          placeholder="Регистрационный номер"
+          name="transportRegNumber"
+        />
+        <Field
+          control={form.control}
+          label="Объем"
+          placeholder="Объем"
+          name="volume"
+        />
+        <Button type="submit">Создать</Button>
+      </form>
+    </Form>
   );
 };
 export default CreateTransportForm;

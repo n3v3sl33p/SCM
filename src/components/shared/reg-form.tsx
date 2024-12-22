@@ -1,17 +1,30 @@
-import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import RegFormField from "./field";
-import { MyForm } from "./my-form";
 import { register } from "@/services/auth";
 
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
+import { Form } from "../ui/form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { RegSchema } from "@/constants/reg-schema";
 
 export const RegForm = () => {
+  const form = useForm<z.infer<typeof RegSchema>>({
+    resolver: zodResolver(RegSchema),
+    defaultValues: {
+      firstName: "",
+      secondName: "",
+      patronymic: "",
+      email: "",
+      password: "",
+    },
+  });
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const form = useFormContext();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
@@ -37,56 +50,59 @@ export const RegForm = () => {
   };
 
   return (
-    <MyForm
-      title="Регистрация"
-      buttonText="Зарегистрироваться"
-      onSubmit={onSubmit}
-    >
-      <RegFormField
-        formControl={form.control}
-        label="Имя"
-        placeholder="Иван"
-        name="firstName"
-      />
-      <RegFormField
-        formControl={form.control}
-        label="Фамилия"
-        placeholder="Залупенко"
-        name="secondName"
-      />
-      <RegFormField
-        formControl={form.control}
-        label="Отчество"
-        placeholder="Иванович"
-        name="patronymic"
-      />
-      <RegFormField
-        formControl={form.control}
-        label="Почта"
-        placeholder="Почта"
-        name="email"
-        inputType="email"
-      />
-      <div className="relative">
-        {showPassword ? (
-          <Eye
-            className="cursor-pointer right-0 absolute translate-y-10 mr-1"
-            onClick={() => setShowPassword(!showPassword)}
-          />
-        ) : (
-          <EyeOff
-            className="cursor-pointer right-0 absolute translate-y-10 mr-1"
-            onClick={() => setShowPassword(!showPassword)}
-          />
-        )}
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit, (e) => console.log(e))}
+        className="space-y-6"
+      >
         <RegFormField
-          formControl={form.control}
-          label="Пароль"
-          placeholder="Пароль"
-          name="password"
-          inputType={showPassword ? "text" : "password"}
+          control={form.control}
+          label="Имя"
+          placeholder="Иван"
+          name="firstName"
         />
-      </div>
-    </MyForm>
+        <RegFormField
+          control={form.control}
+          label="Фамилия"
+          placeholder="Залупенко"
+          name="secondName"
+        />
+        <RegFormField
+          control={form.control}
+          label="Отчество"
+          placeholder="Иванович"
+          name="patronymic"
+        />
+        <RegFormField
+          control={form.control}
+          label="Почта"
+          placeholder="Почта"
+          name="email"
+          inputType="email"
+        />
+        <div className="relative">
+          {showPassword ? (
+            <Eye
+              className="cursor-pointer right-0 absolute translate-y-10 mr-1"
+              onClick={() => setShowPassword(!showPassword)}
+            />
+          ) : (
+            <EyeOff
+              className="cursor-pointer right-0 absolute translate-y-10 mr-1"
+              onClick={() => setShowPassword(!showPassword)}
+            />
+          )}
+          <RegFormField
+            control={form.control}
+            label="Пароль"
+            placeholder="Пароль"
+            name="password"
+            inputType={showPassword ? "text" : "password"}
+          />
+        </div>
+
+        <Button type="submit">Зарегистрироваться</Button>
+      </form>
+    </Form>
   );
 };

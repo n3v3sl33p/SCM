@@ -1,16 +1,26 @@
-import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 import Field from "./field";
-import { MyForm } from "./my-form";
+import { Form } from "@/components/ui/form";
+import { LoginSchema } from "@/constants/login-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { login } from "@/services/auth";
-
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
 export const LoginForm = () => {
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const form = useFormContext();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
@@ -31,33 +41,36 @@ export const LoginForm = () => {
   };
 
   return (
-    <MyForm title="Войти в аккаунт" buttonText="Войти" onSubmit={onSubmit}>
-      <Field
-        formControl={form.control}
-        label="Email"
-        placeholder="email@mail.com"
-        name="email"
-      />
-      <div className="relative">
-        {showPassword ? (
-          <Eye
-            className="cursor-pointer right-0 absolute translate-y-10 mr-1"
-            onClick={() => setShowPassword(!showPassword)}
-          />
-        ) : (
-          <EyeOff
-            className="cursor-pointer right-0 absolute translate-y-10 mr-1"
-            onClick={() => setShowPassword(!showPassword)}
-          />
-        )}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <Field
-          formControl={form.control}
-          label="Пароль"
-          placeholder="Пароль"
-          name="password"
-          inputType={showPassword ? "text" : "password"}
+          control={form.control}
+          label="Email"
+          placeholder="email@mail.com"
+          name="email"
         />
-      </div>
-    </MyForm>
+        <div className="relative">
+          {showPassword ? (
+            <Eye
+              className="cursor-pointer right-0 absolute translate-y-10 mr-1"
+              onClick={() => setShowPassword(!showPassword)}
+            />
+          ) : (
+            <EyeOff
+              className="cursor-pointer right-0 absolute translate-y-10 mr-1"
+              onClick={() => setShowPassword(!showPassword)}
+            />
+          )}
+          <Field
+            control={form.control}
+            label="Пароль"
+            placeholder="Пароль"
+            name="password"
+            inputType={showPassword ? "text" : "password"}
+          />
+        </div>
+        <Button type="submit">Войти</Button>
+      </form>
+    </Form>
   );
 };

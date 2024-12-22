@@ -6,7 +6,11 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { Input } from "../ui/input";
+import SelectCustom from "./select-custom";
+import { useState } from "react";
+import { useInterval } from "@reactuses/core";
+import { getAllTransportTypes } from "@/services/transport";
+import { ITransportType } from "@/models/ITransportType";
 
 interface Props<T extends FieldValues> {
   control: Control<T>;
@@ -16,13 +20,19 @@ interface Props<T extends FieldValues> {
   name: Path<T>;
 }
 
-const Field = <T extends FieldValues>({
+const SelectField = <T extends FieldValues>({
   control,
   label,
   placeholder,
   name,
   inputType,
 }: Props<T>) => {
+  const [selected, setSelected] = useState(null);
+  const [items, setItems] = useState<ITransportType[]>([]);
+  useInterval(async () => {
+    const response = await getAllTransportTypes();
+    setItems(response);
+  }, 2000);
   return (
     <FormField
       control={control}
@@ -31,7 +41,7 @@ const Field = <T extends FieldValues>({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Input placeholder={placeholder} {...field} type={inputType} />
+            <SelectCustom setSelected={field.onChange} items={items} />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -40,4 +50,4 @@ const Field = <T extends FieldValues>({
   );
 };
 
-export default Field;
+export default SelectField;

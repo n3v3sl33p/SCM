@@ -1,4 +1,5 @@
 import api from "@/axios-config";
+import { ITransport } from "@/models/ITransport";
 import { ITransportType } from "@/models/ITransportType";
 import { AxiosResponse } from "axios";
 
@@ -34,6 +35,23 @@ export const deleteTransportType = async (id: string) => {
     );
 
     return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const createTransport = async (data: ITransport) => {
+  try {
+    const response: AxiosResponse<ITransport> = await api.post(
+      `/transport/create`,
+      {
+        driverId: data.driverId,
+        transportType: data.transportTypeId,
+        regNumber: data.transportRegNumber,
+        volume: data.volume,
+      }
+    );
+    return response?.data;
   } catch (error) {
     throw error;
   }

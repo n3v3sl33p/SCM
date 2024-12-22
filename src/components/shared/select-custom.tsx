@@ -6,12 +6,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ITransportType } from "@/models/ITransportType";
 
 interface Props {
   setSelected: React.Dispatch<React.SetStateAction<string>>;
+  items: ITransportType[];
 }
 
-export const SelectCustom: React.FC<Props> = ({ setSelected }) => {
+export const SelectCustom: React.FC<Props> = ({ setSelected, items }) => {
   return (
     <Select
       onValueChange={(value) => {
@@ -23,11 +25,11 @@ export const SelectCustom: React.FC<Props> = ({ setSelected }) => {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="jiguli">Жигули</SelectItem>
-          <SelectItem value="gruzovik">Грузовик МАН</SelectItem>
-          <SelectItem value="kamaz">Камаз(для нищих)</SelectItem>
-          <SelectItem value="gazelle">Газель Жорика</SelectItem>
-          <SelectItem value="courier">Курьер пешком</SelectItem>
+          {items.map((item) => (
+            <SelectItem key={item.id} value={item.id}>
+              {item.name}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>

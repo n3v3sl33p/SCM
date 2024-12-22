@@ -5,13 +5,29 @@ import { createTrasportType } from "@/services/transport";
 import toast from "react-hot-toast";
 import AllTransportTypes from "./all-transport-types";
 
+const items = [
+  {
+    name: "Cамолет",
+    id: "Самолет",
+  },
+  {
+    name: "Грузовик",
+    id: "Грузовик",
+  },
+  {
+    name: "Газель",
+    id: "Газель",
+  },
+];
+
 const CreateTransportType = () => {
   const [selected, setSelected] = useState("");
+  console.log(selected);
 
   return (
     <div>
       aboba
-      <SelectCustom setSelected={setSelected} />
+      <SelectCustom setSelected={setSelected} items={items} />
       <Button
         onClick={() => {
           try {
