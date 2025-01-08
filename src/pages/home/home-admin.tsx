@@ -1,6 +1,6 @@
 import AllUsers from "@/components/shared/all-users";
-import CreateTransportForm from "@/components/shared/create-transport-form";
 import CreateTransportType from "@/components/shared/create-transport-type";
+import TransportPage from "@/components/shared/transport-page";
 import { CustomTrigger } from "@/components/shared/custom-trigger";
 import Map from "@/components/shared/Map";
 
@@ -21,7 +21,7 @@ const MenuItems = [
     icon: BookText,
   },
   {
-    title: "Мой склад",
+    title: "Cклад",
     icon: Warehouse,
   },
   {
@@ -62,7 +62,7 @@ const HomePageAdmin: React.FC<Props> = ({ className }) => {
         )}
         {selected === 3 && <AllUsers />}
         {selected === 4 && <CreateTransportType />}
-        {selected === 5 && <CreateTransportForm />}
+        {selected === 5 && <TransportPage />}
       </div>
     </SidebarProvider>
   );

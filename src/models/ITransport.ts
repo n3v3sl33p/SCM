@@ -1,6 +1,6 @@
 export interface ITransport {
-  driverId: string;
-  transportTypeId: string;
-  transportRegNumber: string;
+  id: string;
+  transportType: string;
+  regNumber: string;
   volume: string;
 }

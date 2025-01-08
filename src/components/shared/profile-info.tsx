@@ -137,7 +137,7 @@ export const ProfileInfo: React.FC<Props> = ({ className }) => {
                     patronymic,
                     email,
                     password,
-                    role: "USER",
+                    role: "ADMIN",
                   });
                   toast.promise(response, {
                     loading: "Сохраняем данные...",

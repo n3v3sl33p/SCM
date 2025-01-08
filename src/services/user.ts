@@ -49,3 +49,15 @@ export const deleteUser = async (id: string) => {
     throw error;
   }
 };
+
+export const addCar = async (id: string, transportId: string) => {
+  try {
+    const response = await api.post(`/users/add-car`, {
+      userId: id,
+      transportIds: [transportId],
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

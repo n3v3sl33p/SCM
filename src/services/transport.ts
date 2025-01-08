@@ -44,14 +44,45 @@ export const createTransport = async (data: ITransport) => {
   try {
     const response: AxiosResponse<ITransport> = await api.post(
       `/transport/create`,
-      {
-        driverId: data.driverId,
-        transportType: data.transportTypeId,
-        regNumber: data.transportRegNumber,
-        volume: data.volume,
-      }
+      data
     );
-    return response?.data;
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getAllTransport = async () => {
+  try {
+    const response: AxiosResponse<ITransport[]> = await api.get(
+      "/transport/all"
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteTransport = async (id: string) => {
+  try {
+    const response: AxiosResponse<ITransport> = await api.delete(
+      `/transport/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getTransportsByUserId = async (id: string) => {
+  try {
+    const response: AxiosResponse<ITransport[]> = await api.get(
+      `/transport/all/${id}`
+    );
+    return response.data;
   } catch (error) {
     throw error;
   }

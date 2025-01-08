@@ -17,6 +17,7 @@ export const SelectCustom: React.FC<Props> = ({ setSelected, items }) => {
   return (
     <Select
       onValueChange={(value) => {
+        console.log(value);
         setSelected(value);
       }}
     >
@@ -25,8 +26,8 @@ export const SelectCustom: React.FC<Props> = ({ setSelected, items }) => {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          {items.map((item) => (
-            <SelectItem key={item.id} value={item.id}>
+          {items.map((item, index) => (
+            <SelectItem key={index} value={item.id}>
               {item.name}
             </SelectItem>
           ))}

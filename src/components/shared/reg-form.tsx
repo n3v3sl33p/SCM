@@ -64,7 +64,7 @@ export const RegForm = () => {
         <RegFormField
           control={form.control}
           label="Фамилия"
-          placeholder="Залупенко"
+          placeholder="Иванов"
           name="secondName"
         />
         <RegFormField

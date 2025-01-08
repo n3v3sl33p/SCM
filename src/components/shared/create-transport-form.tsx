@@ -7,13 +7,11 @@ import { Button } from "../ui/button";
 import SelectField from "./select-field";
 import { createTransport } from "@/services/transport";
 import toast from "react-hot-toast";
+import { ITransport } from "@/models/ITransport";
 
 interface Props {}
 
 const createTransportSchema = z.object({
-  driverId: z.string().min(1, {
-    message: "Это поле обязательно",
-  }),
   transportTypeId: z.string().min(1, {
     message: "Это поле обязательно",
   }),
@@ -25,10 +23,10 @@ const createTransportSchema = z.object({
   }),
 });
 const handleSubmit: SubmitHandler<FieldValues> = (data) => {
-  const transport = {
-    driverId: data.driverId,
-    transportTypeId: data.transportTypeId,
-    transportRegNumber: data.transportRegNumber,
+  const transport: ITransport = {
+    id: "",
+    transportType: data.transportTypeId,
+    regNumber: data.transportRegNumber,
     volume: data.volume,
   };
   try {
@@ -46,42 +44,39 @@ const CreateTransportForm: React.FC<Props> = ({}) => {
   const form = useForm<z.infer<typeof createTransportSchema>>({
     resolver: zodResolver(createTransportSchema),
     defaultValues: {
-      driverId: "",
       transportTypeId: "",
       transportRegNumber: "",
       volume: "",
     },
   });
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <Field
-          control={form.control}
-          label="Водитель"
-          placeholder="Водитель"
-          name="driverId"
-        />
-        <SelectField
-          control={form.control}
-          label="Тип транспорта"
-          name="transportTypeId"
-          placeholder="Тип транспорта"
-        />
-        <Field
-          control={form.control}
-          label="Регистрационный номер"
-          placeholder="Регистрационный номер"
-          name="transportRegNumber"
-        />
-        <Field
-          control={form.control}
-          label="Объем"
-          placeholder="Объем"
-          name="volume"
-        />
-        <Button type="submit">Создать</Button>
-      </form>
-    </Form>
+    <div className="max-w-xl">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)}>
+          <SelectField
+            control={form.control}
+            label="Тип транспорта"
+            name="transportTypeId"
+            placeholder="Тип транспорта"
+          />
+          <Field
+            control={form.control}
+            label="Регистрационный номер"
+            placeholder="Регистрационный номер"
+            name="transportRegNumber"
+          />
+          <Field
+            control={form.control}
+            label="Объем"
+            placeholder="Объем"
+            name="volume"
+          />
+          <Button className="mt-4" type="submit">
+            Создать
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 };
 export default CreateTransportForm;

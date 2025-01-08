@@ -27,10 +27,10 @@ const SelectField = <T extends FieldValues>({
   name,
   inputType,
 }: Props<T>) => {
-  const [selected, setSelected] = useState(null);
   const [items, setItems] = useState<ITransportType[]>([]);
   useInterval(async () => {
     const response = await getAllTransportTypes();
+
     setItems(response);
   }, 2000);
   return (
