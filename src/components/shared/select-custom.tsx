@@ -17,7 +17,6 @@ export const SelectCustom: React.FC<Props> = ({ setSelected, items }) => {
   return (
     <Select
       onValueChange={(value) => {
-        console.log(value);
         setSelected(value);
       }}
     >

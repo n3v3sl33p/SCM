@@ -36,85 +36,25 @@ import {
 import toast from "react-hot-toast";
 import { deleteTransport } from "@/services/transport";
 
-export const columns: ColumnDef<ITransport>[] = [
-  {
-    accessorKey: "transportType",
-    header: "Тип",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("transportType")}</div>
-    ),
-  },
-  {
-    accessorKey: "regNumber",
-    header: "Номер",
-    cell: ({ row }) => <div>{row.getValue("regNumber")}</div>,
-  },
-  {
-    accessorKey: "volume",
-    header: ({ column }) => (
-      <Button
-        className="p-0 translate-x-36"
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Грузоподъемность
-        <ArrowUpDown />
-      </Button>
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="text-right font-medium">{row.getValue("volume")}</div>
-      );
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const transport = row.original;
+interface Identifier {
+  id: string;
+}
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Функции</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(transport.id)}
-            >
-              Копировать ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
+interface DataTableProps<T extends Identifier> {
+  data: T[];
+  isAdmin?: boolean;
+  columns: ColumnDef<T>[];
+  isForTransport?: boolean;
+  filter: string;
+}
 
-            <DropdownMenuItem
-              onClick={() => {
-                toast.promise(deleteTransport(transport.id), {
-                  loading: "Удаляем... ",
-                  success: "Транспорт удален",
-                  error: "ОШИБКА ПРИ УДАЛЕНИИ ТРАНСПОРТА",
-                });
-              }}
-            >
-              <span className="text-red-500">Удалить</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
-export function DataTable({
+export function DataTable<T extends Identifier>({
   data,
   isAdmin,
-}: {
-  data: ITransport[];
-  isAdmin?: boolean;
-}) {
+  columns,
+  isForTransport,
+  filter,
+}: DataTableProps<T>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -141,56 +81,55 @@ export function DataTable({
       rowSelection,
     },
   });
+  if (isForTransport) {
+    columns[3].cell = ({ row }) => {
+      const transport = row.original;
 
-  columns[3].cell = ({ row }) => {
-    const transport = row.original;
-
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Функции</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => navigator.clipboard.writeText(transport.id)}
-          >
-            Копировать ID
-          </DropdownMenuItem>
-          {isAdmin && <DropdownMenuSeparator />}
-
-          {isAdmin && (
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Функции</DropdownMenuLabel>
+            <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => {
-                toast.promise(deleteTransport(transport.id), {
-                  loading: "Удаляем... ",
-                  success: "Транспорт удален",
-                  error: "ОШИБКА ПРИ УДАЛЕНИИ ТРАНСПОРТА",
-                });
-              }}
+              onClick={() => navigator.clipboard.writeText(transport.id)}
             >
-              <span className="text-red-500">Удалить</span>
+              Копировать ID
             </DropdownMenuItem>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    );
-  };
+            {isAdmin && <DropdownMenuSeparator />}
+
+            {isAdmin && (
+              <DropdownMenuItem
+                onClick={() => {
+                  toast.promise(deleteTransport(transport.id), {
+                    loading: "Удаляем... ",
+                    success: "Транспорт удален",
+                    error: "ОШИБКА ПРИ УДАЛЕНИИ ТРАНСПОРТА",
+                  });
+                }}
+              >
+                <span className="text-red-500">Удалить</span>
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    };
+  }
 
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Поиск по номеру"
-          value={
-            (table.getColumn("regNumber")?.getFilterValue() as string) ?? ""
-          }
+          placeholder="Поиск"
+          value={(table.getColumn(filter)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("regNumber")?.setFilterValue(event.target.value)
+            table.getColumn(filter)?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

@@ -4,6 +4,7 @@ import { ITransport } from "@/models/ITransport";
 import { useInterval } from "@reactuses/core";
 import { getTransportsByUserId } from "@/services/transport";
 import { useUserStore } from "@/store/useUserStore";
+import { columns } from "@/constants/transport-coluns";
 
 const UserTransports = () => {
   const currentUser = useUserStore((state) => state.user);
@@ -20,7 +21,12 @@ const UserTransports = () => {
   return (
     <div>
       <h2 className="text-3xl">Ваш транспорт</h2>
-      <DataTable data={transports} />
+      <DataTable
+        data={transports}
+        columns={columns}
+        isForTransport
+        filter="regNumber"
+      />
     </div>
   );
 };
