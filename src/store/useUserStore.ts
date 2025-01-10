@@ -10,11 +10,11 @@ interface UserState {
 
 export const useUserStore = create<UserState>()((set) => ({
   user: null,
-  setUser: (data) => set((state) => ({ user: data })),
+  setUser: (data) => set(() => ({ user: data })),
   fetchUser: async () => {
     try {
       const response = await getUserData();
-      set((state) => ({ user: response }));
+      set(() => ({ user: response }));
     } catch (error) {
       throw error;
     }

@@ -41,7 +41,6 @@ export const ProfileInfo: React.FC<Props> = ({ className }) => {
     }
   }, [user]);
 
-  //TODO add skeleton loading
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -95,73 +94,82 @@ export const ProfileInfo: React.FC<Props> = ({ className }) => {
           />
         </div>
         <div>
-          <Label>Пароль</Label>
-          <div className="relative">
-            {showPassword ? (
-              <Eye
-                onClick={() => setShowPassword(!showPassword)}
-                className="cursor-pointer right-0 absolute translate-y-2 mr-1"
-              />
-            ) : (
-              <EyeOff
-                onClick={() => setShowPassword(!showPassword)}
-                className="cursor-pointer right-0 absolute translate-y-2 mr-1"
-              />
-            )}
-            <Input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              readOnly={!canChange}
-            />
-          </div>
+          {user.role !== "ADMIN" && (
+            <div>
+              <Label>Пароль</Label>
+              <div className="relative">
+                {showPassword ? (
+                  <Eye
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="cursor-pointer right-0 absolute translate-y-2 mr-1"
+                  />
+                ) : (
+                  <EyeOff
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="cursor-pointer right-0 absolute translate-y-2 mr-1"
+                  />
+                )}
+
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  readOnly={!canChange}
+                />
+              </div>
+            </div>
+          )}
         </div>
-        {canChange && (
-          <Button
-            className="mt-6"
-            onClick={() => {
-              setCanChange(!canChange);
-              if (
-                email !== user.email ||
-                firstName !== user.firstName ||
-                lastName !== user.lastName ||
-                patronymic !== user.patronymic ||
-                password
-              ) {
-                try {
-                  const response = changeUserData({
-                    id: user.id,
-                    firstName,
-                    lastName,
-                    patronymic,
-                    email,
-                    password,
-                    role: "ADMIN",
-                  });
-                  toast.promise(response, {
-                    loading: "Сохраняем данные...",
-                    success: "Данные сохранены успешно",
-                    error: "ОШИБКА ПРИ СОХРАНЕНИИ ДАННЫХ",
-                  });
-                } catch (error) {
-                  console.log(error);
-                }
-              }
-            }}
-          >
-            Сохранить
-          </Button>
-        )}
-        {!canChange && (
-          <Button
-            className="mt-6"
-            onClick={() => {
-              setCanChange(!canChange);
-            }}
-          >
-            Редактировать
-          </Button>
+        {user.role !== "ADMIN" && (
+          <div>
+            {canChange && (
+              <Button
+                className="mt-6"
+                onClick={() => {
+                  setCanChange(!canChange);
+                  if (
+                    email !== user.email ||
+                    firstName !== user.firstName ||
+                    lastName !== user.lastName ||
+                    patronymic !== user.patronymic ||
+                    password
+                  ) {
+                    try {
+                      const response = changeUserData({
+                        id: user.id,
+                        firstName,
+                        lastName,
+                        patronymic,
+                        email,
+                        password,
+                        role: "ADMIN",
+                      });
+                      toast.promise(response, {
+                        loading: "Сохраняем данные...",
+                        success: "Данные сохранены успешно",
+                        error: "ОШИБКА ПРИ СОХРАНЕНИИ ДАННЫХ",
+                      });
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  }
+                }}
+              >
+                Сохранить
+              </Button>
+            )}
+            {!canChange && (
+              <Button
+                className="mt-6"
+                onClick={() => {
+                  setCanChange(!canChange);
+                }}
+              >
+                Редактировать
+              </Button>
+            )}
+          </div>
         )}
       </div>
     </>

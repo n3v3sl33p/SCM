@@ -41,7 +41,11 @@ const SelectField = <T extends FieldValues>({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <SelectCustom setSelected={field.onChange} items={items} />
+            <SelectCustom
+              setSelected={field.onChange}
+              items={items}
+              placeholder={placeholder}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

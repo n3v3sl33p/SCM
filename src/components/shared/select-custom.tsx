@@ -11,9 +11,14 @@ import { ITransportType } from "@/models/ITransportType";
 interface Props {
   setSelected: React.Dispatch<React.SetStateAction<string>>;
   items: ITransportType[];
+  placeholder?: string;
 }
 
-export const SelectCustom: React.FC<Props> = ({ setSelected, items }) => {
+export const SelectCustom: React.FC<Props> = ({
+  setSelected,
+  items,
+  placeholder,
+}) => {
   return (
     <Select
       onValueChange={(value) => {
@@ -21,7 +26,7 @@ export const SelectCustom: React.FC<Props> = ({ setSelected, items }) => {
       }}
     >
       <SelectTrigger className="w-[280px]">
-        <SelectValue placeholder="Выберите тип транспорта" />
+        <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

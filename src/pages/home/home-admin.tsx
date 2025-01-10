@@ -6,9 +6,8 @@ import Map from "@/components/shared/Map";
 
 import { ProfileInfo } from "@/components/shared/profile-info";
 import { AppSidebar } from "@/components/shared/sidebar";
-import { WarehouseInfo } from "@/components/shared/warehouse-info";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { User, Warehouse, BookText, Car } from "lucide-react";
+import { User, BookText, Car, MapIcon } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
@@ -21,19 +20,11 @@ const MenuItems = [
     icon: BookText,
   },
   {
-    title: "Cклад",
-    icon: Warehouse,
-  },
-  {
     title: "Карта",
-    icon: User,
+    icon: MapIcon,
   },
   {
     title: "Пользователи",
-    icon: User,
-  },
-  {
-    title: "Тип транспорта",
     icon: User,
   },
   {
@@ -54,15 +45,13 @@ const HomePageAdmin: React.FC<Props> = ({ className }) => {
       <CustomTrigger />
       <div className="m-4 flex-1 px-20">
         {selected === 0 && <ProfileInfo />}
-        {selected === 1 && <WarehouseInfo />}
-        {selected === 2 && (
+        {selected === 1 && (
           <div>
             <Map />
           </div>
         )}
-        {selected === 3 && <AllUsers />}
-        {selected === 4 && <CreateTransportType />}
-        {selected === 5 && <TransportPage />}
+        {selected === 2 && <AllUsers />}
+        {selected === 3 && <TransportPage />}
       </div>
     </SidebarProvider>
   );

@@ -27,7 +27,11 @@ const CreateTransportType = () => {
   return (
     <div>
       Тип транспорта
-      <SelectCustom setSelected={setSelected} items={items} />
+      <SelectCustom
+        setSelected={setSelected}
+        items={items}
+        placeholder="Выберите тип транспорта"
+      />
       <Button
         onClick={() => {
           try {

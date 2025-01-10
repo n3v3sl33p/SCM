@@ -18,7 +18,11 @@ const AllTransportTypes: React.FC<Props> = ({ className }) => {
       console.log(error);
     }
   }, 2000);
-  return <ScrollAreaCustom items={items} />;
+  return (
+    <div className="mt-5">
+      <ScrollAreaCustom items={items} />
+    </div>
+  );
 };
 
 export default AllTransportTypes;
